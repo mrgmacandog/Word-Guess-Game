@@ -21,8 +21,11 @@
     let game = {
         totalGames: 0, // Number of total games played
         wins: 0,  // Number of wins
-        wordsLeft: ["m&m's", "reese's", "hershey's", "snickers", "kit kat", "twix", "twizzlers",  
-                    "skittles", "starburst", "milkyway", "butterfinger"],  // Array of candies
+        wordsLeft: ["skittles", "m&m's", "snickers", "reese's cups", "starburst", "candy corn",
+                    "hot tamales", "hershey's minis", "tootsie pops", "jolly ranchers", "taffy",
+                    "sour patch kids", "almond joy", "butterfinger", "blow pops", "milky way",
+                    "swedish fish", "kit kat", "double bubble gum", "three musketeers",
+                    "lemonheads", "twix", "life savers", "whoppers", "licorice"],  // Array of candies
         currWord: "",  // Current word
         currWordOutput: "",  // How the word will appear on the webpage
         currWordLetters: [],  // Nested array with each letter of the word
@@ -33,43 +36,87 @@
         numLettersFound: 0,  // Number of letters found
         lettersGuessed: "",  // String of letter guessed that are not in the word
 
-        createCandyCards: function() {
-            for (let i = 0; i < this.wordsLeft.length; i++) {
-                // Create a bootstrap column
-                let column = document.createElement("div");
-                column.className = "col-md-3";
+        // createCandyCards: function() {
+        //     for (let i = 0; i < this.wordsLeft.length; i++) {
+        //         // Create a bootstrap column
+        //         let column = document.createElement("div");
+        //         column.className = "col-md-3";
 
-                // Create a card and append it to the column
-                let card = document.createElement("div");
-                card.className = "card";
-                column.append(card);
+        //         // Create a card and append it to the column
+        //         let card = document.createElement("div");
+        //         card.className = "card";
+        //         column.append(card);
 
-                // Create an image tag and append it to card
-                let image = document.createElement("img");
-                image.className = "card-img-top";
-                image.src = "assets/images/candies/skittles.jpg";
-                image.alt = "skittles";
-                card.appendChild(image);
+        //         // Create an image tag and append it to card
+        //         let image = document.createElement("img");
+        //         image.className = "card-img-top";
+        //         image.src = "assets/images/candies/skittles.jpg";
+        //         image.alt = this.wordsLeft[i];
+        //         card.appendChild(image);
 
-                // Create a card body and append it to the card
-                let cardBody = document.createElement("div");
-                cardBody.className = "card-body";
-                card.append(cardBody);
+        //         // Create a card body and append it to the card
+        //         let cardBody = document.createElement("div");
+        //         cardBody.className = "card-body";
+        //         card.append(cardBody);
 
-                // Create a card title and append it to the card body
-                let cardTitle = document.createElement("h5");
-                cardTitle.className = "card-title";
-                cardTitle.innerText = "skittles";
-                cardBody.append(cardTitle);
+        //         // Create a card title and append it to the card body
+        //         let cardTitle = document.createElement("h5");
+        //         cardTitle.className = "card-title";
+        //         cardTitle.innerText = this.wordsLeft[i];
+        //         cardBody.append(cardTitle);
 
-                // Create a description and append it to the card body
-                let cardText = document.createElement("p");
-                cardText.className = "card-text";
-                cardText.innerText = "You got this right!";
-                cardBody.append(cardText);
+        //         // Create a description and append it to the card body
+        //         let cardText = document.createElement("p");
+        //         cardText.className = "card-text";
+        //         cardText.innerText = "You got this right!";
+        //         cardBody.append(cardText);
                 
-                $("candies").appendChild(column);
+        //         $("candies").appendChild(column);
+        //     }
+        // },
+
+        createCandyCard: function(isSolved) {
+            
+            // Create a bootstrap column
+            let column = document.createElement("div");
+            column.className = "col-md-3";
+
+            // Create a card and append it to the column
+            let card = document.createElement("div");
+            card.className = "card";
+            column.append(card);
+
+            // Create an image tag and append it to card
+            let image = document.createElement("img");
+            image.className = "card-img-top";
+            image.src = "assets/images/candies/" + this.currWord + ".jpg";
+            image.alt = this.currWord;
+            card.appendChild(image);
+
+            // Create a card body and append it to the card
+            let cardBody = document.createElement("div");
+            cardBody.className = "card-body";
+            card.append(cardBody);
+
+            // Create a card title and append it to the card body
+            let cardTitle = document.createElement("h5");
+            cardTitle.className = "card-title";
+            cardTitle.innerText = this.currWord;
+            cardBody.append(cardTitle);
+
+            // Create a description and append it to the card body
+            let cardText = document.createElement("p");
+            cardText.className = "card-text";
+            // If word is guessed
+            if (isSolved) {
+                cardText.innerText = "You got this right!";
+            } else {  // Word is not guessed
+                cardText.innerText = "You got this wrong!";
             }
+            
+            cardBody.append(cardText);
+            
+            $("candies").appendChild(column);
         },
 
         // Starts a new game by selecting a random word from the array of words
@@ -200,7 +247,7 @@
         // Testing area
         
 
-        game.createCandyCards();
+        // game.createCandyCards();
 
         // Initiate a new game
         game.startNewGame();
@@ -240,6 +287,7 @@
                             audio.play();
                         }
 
+                        game.createCandyCard(isSolved);
                         game.displayIsSolved(isSolved);
 
                         game.totalGames++;
