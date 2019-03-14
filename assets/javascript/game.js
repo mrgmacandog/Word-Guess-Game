@@ -21,8 +21,8 @@
     let game = {
         totalGames: 0, // Number of total games played
         wins: 0,  // Number of wins
-        wordsLeft: ["m&m's", "reese's", "hershey's", "snickers", "kit kat", "twix", "twizzlers",  
-                    "skittles", "starburst", "milkyway", "butterfinger"],  // Array of candies
+        wordsLeft: ["m&m's", "reese's"], //"hershey's", "snickers", "kit kat", "twix", "twizzlers",  
+                    // "skittles", "starburst", "milkyway", "butterfinger"],  // Array of candies
         currWord: "",  // Current word
         currWordOutput: "",  // How the word will appear on the webpage
         currWordLetters: [],  // Nested array with each letter of the word
@@ -41,8 +41,7 @@
             this.currWord = this.wordsLeft[Math.floor(Math.random() * this.wordsLeft.length)];
             console.log("Word being guessed: " + this.currWord);
 
-            // Remove current word from the list of words left
-            this.wordsLeft.splice(this.wordsLeft.indexOf(this.currWord), 1);
+            
 
 
             for (let i = 0; i < this.currWord.length; i++) {
@@ -123,7 +122,33 @@
         checkIfSolved: function() {
             return this.numLettersFound === this.currWord.length;
         },
+
+        displayIsSolved: function(isSolved) {
+            let output = "You "
+
+            // If the word is guessed
+            if (isSolved) {
+                output += "succesfully guessed ";
+            } else {  // Word is not guessed
+                output += "failed to guess ";
+            }
+
+            output += this.currWord;
+            console.log(this.currWord);
+            $("outcome").textContent = output;
+        },
+
+        displayResults: function() {
+            $("game-over").classList.toggle("hidden");
+            $("end-wins").textContent = this.wins;
+            $("end-total-games").textContent = this.totalGames;
+        },
+
+        // Resets this game object's attributes
         reset: function() {
+            // Remove current word from the list of words left
+            this.wordsLeft.splice(this.wordsLeft.indexOf(this.currWord), 1);
+
             this.currWordOutput = "";
             this.currWordLetters = [];
             this.numGuessesLeft = NUM_START_GUESSES;
@@ -142,44 +167,60 @@
         document.onkeyup = function(event) {
             console.log("Key pressed: " + event.key);
 
-            if (event.keyCode >= 65 && event.keyCode <= 90) {
-                // Guesses with a key
-                game.guessLetter(event.key); 
+            // If there are still words to be guessed
+            if (game.wordsLeft.length > 0) {
 
-                // Continue with current word if it's not solved yet
-                if (!game.checkIfSolved() && game.numGuessesLeft > 0) {
-                    console.log("Continuing game");
-                // Start new game with new word
-                } else {
-                    if (game.checkIfSolved()) {
-                        console.log("You solved it!");
-                        game.wins++;
+                if (event.keyCode >= 65 && event.keyCode <= 90) {
+                    // Guesses with a key
+                    game.guessLetter(event.key); 
 
-                        // Open assets/audio/Fanfare-sound/Read.txt for licencing
-                        let audio = new Audio("assets/audio/Fanfare-sound/Fanfare-sound.mp3");
-                        audio.play();
+                    // Continue with current word if it's not solved yet
+                    if (!game.checkIfSolved() && game.numGuessesLeft > 0) {
+                        console.log("Continuing game");
+                    // Start new game with new word
                     } else {
-                        console.log("You ran out of guesses. Game over!");
 
-                        // Open assets/audio/womp-womp/Read.txt for licencing
-                        let audio = new Audio("assets/audio/womp-womp/womp-womp.mp3");
-                        audio.play();
+                        let isSolved = game.checkIfSolved()
+
+                        if (isSolved) {
+                            console.log("You solved it!");
+                            game.wins++;
+                            
+
+                            // Open assets/audio/Fanfare-sound/Read.txt for licencing
+                            let audio = new Audio("assets/audio/Fanfare-sound/Fanfare-sound.mp3");
+                            audio.play();
+                        } else {
+                            console.log("You ran out of guesses. Next word!");
+
+                            // Open assets/audio/womp-womp/Read.txt for licencing
+                            let audio = new Audio("assets/audio/womp-womp/womp-womp.mp3");
+                            audio.play();
+                        }
+
+                        game.displayIsSolved(isSolved);
+
+                        game.totalGames++;
+                        console.log("Total Games:" + game.totalGames)
+                        console.log("");
+                        game.reset();
+
+                        // Only start a new game if there are words left
+                        if (game.wordsLeft.length > 0) {
+                            game.startNewGame();
+                        } else {  // Else display the results
+                            game.displayResults();
+                            console.log("Congratulations, you were able to find " + game.wins +
+                                        " out of the " + game.totalGames +" played");
+                        }
                     }
-                    game.totalGames++;
-                    console.log("Total Games:" + game.totalGames)
-                    console.log("");
-                    game.reset();
-                    game.startNewGame();
+                } else {
+                    console.log("Input must be a letter");
                 }
-            } else {
-                console.log("Input must be a letter");
-            }
-
-
             
             console.log("");
             
-            
+            }
         }
     }
     
