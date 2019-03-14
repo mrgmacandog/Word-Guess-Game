@@ -3,26 +3,83 @@
     <head>
         <meta charset="UTF-8">
         <script src="assets/javascript/game.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" href="assets/css/style.css">
         <title>Hangman</title>
     </head>
     <body>
-        <div>
-            <h1>Press any key to get started!</h1>
+        <div class="jumbotron jumbotron-fluid">
+            <h1 class="display-4">Candy Guesser</h1>
+            <p class="lead">The goals of this game is to guess the current word being displayed.</p>
+            <hr class="my-4">
+            <p>Press any key to start guessing!</p>
+        </div>
 
-            <p>Total games played: <span id="total-games"></span></p>
+        <div class="container">
 
-            <p>Wins: <span id="num-wins"></span></p>
+            <div class="row">
 
-            <p id="outcome"></p>
-            
-            <p>Current word: <span id="curr-word">?</span></p>
-            
-            <p>Number of guesses remaining: <span id="num-guesses-left">?</span></p>
-            
-            <p>Letters already guessed: <span id="letters-guessed">?</span></p>
+                <div class="col-md-6">
+                    <!-- <p>Total games played: <span id="total-games"></span></p>
 
-            <p id="game-over" class="hidden">Game Over! You were able to guess <span id="end-wins"></span> out of the <span id="end-total-games"></span> word(s)!</p>
+                    <p>Wins: <span id="num-wins"></span></p>
+
+                    <p id="outcome"></p> -->
+
+
+
+
+                    <div class="card">
+                        <div class="card-header">
+                            Stats
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Total games played: <span id="total-games"></span></li>
+                            <li class="list-group-item">Wins: <span id="num-wins"></span></li>
+                            <li id="outcome" class="list-group-item"></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <!-- <p>Current word: <span id="curr-word">?</span></p>
+                    
+                    <p>Number of guesses remaining: <span id="num-guesses-left">?</span></p>
+                    
+                    <p>Letters already guessed: <span id="letters-guessed">?</span></p>
+
+                    <p id="game-over" class="hidden">Game Over! You were able to guess <span id="end-wins"></span> out of the <span id="end-total-games"></span> word(s)!</p> -->
+                
+                
+                
+                
+                    <div class="card">
+                        <div class="card-header">
+                            Current word: <span id="curr-word">?</span>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Number of guesses remaining: <span id="num-guesses-left">?</span></li>
+                            <li class="list-group-item">Letters already guessed: <span id="letters-guessed">?</span></li>
+                            <li id="game-over" class="list-group-item hidden">Game Over! You were able to guess <span id="end-wins"></span> out of the <span id="end-total-games"></span> word(s)!</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="candies" class="row">
+                <!-- <div class="col-md-3">
+                    <div class="card">
+                        <img class="card-img-top" src="assets/images/candies/skittles.jpg" alt="skittles">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        </div>
+                    </div>
+                </div> -->
+
+                
+            </div>
         </div>
     </body>
 </html>

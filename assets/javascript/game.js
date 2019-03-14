@@ -21,8 +21,8 @@
     let game = {
         totalGames: 0, // Number of total games played
         wins: 0,  // Number of wins
-        wordsLeft: ["m&m's", "reese's"], //"hershey's", "snickers", "kit kat", "twix", "twizzlers",  
-                    // "skittles", "starburst", "milkyway", "butterfinger"],  // Array of candies
+        wordsLeft: ["m&m's", "reese's", "hershey's", "snickers", "kit kat", "twix", "twizzlers",  
+                    "skittles", "starburst", "milkyway", "butterfinger"],  // Array of candies
         currWord: "",  // Current word
         currWordOutput: "",  // How the word will appear on the webpage
         currWordLetters: [],  // Nested array with each letter of the word
@@ -32,6 +32,45 @@
                                             // Starts off with the constant
         numLettersFound: 0,  // Number of letters found
         lettersGuessed: "",  // String of letter guessed that are not in the word
+
+        createCandyCards: function() {
+            for (let i = 0; i < this.wordsLeft.length; i++) {
+                // Create a bootstrap column
+                let column = document.createElement("div");
+                column.className = "col-md-3";
+
+                // Create a card and append it to the column
+                let card = document.createElement("div");
+                card.className = "card";
+                column.append(card);
+
+                // Create an image tag and append it to card
+                let image = document.createElement("img");
+                image.className = "card-img-top";
+                image.src = "assets/images/candies/skittles.jpg";
+                image.alt = "skittles";
+                card.appendChild(image);
+
+                // Create a card body and append it to the card
+                let cardBody = document.createElement("div");
+                cardBody.className = "card-body";
+                card.append(cardBody);
+
+                // Create a card title and append it to the card body
+                let cardTitle = document.createElement("h5");
+                cardTitle.className = "card-title";
+                cardTitle.innerText = "skittles";
+                cardBody.append(cardTitle);
+
+                // Create a description and append it to the card body
+                let cardText = document.createElement("p");
+                cardText.className = "card-text";
+                cardText.innerText = "You got this right!";
+                cardBody.append(cardText);
+                
+                $("candies").appendChild(column);
+            }
+        },
 
         // Starts a new game by selecting a random word from the array of words
         startNewGame: function() {
@@ -160,6 +199,9 @@
     window.onload = function() {
         // Testing area
         
+
+        game.createCandyCards();
+
         // Initiate a new game
         game.startNewGame();
 
