@@ -10,75 +10,61 @@
     <body>
         <div class="jumbotron jumbotron-fluid">
             <h1 class="display-4">Candy Guesser</h1>
-            <p class="lead">The goal of this game is to guess the current word being displayed below. Each word is from a list of popular halloween candies given out!</p>
-            <hr class="my-4">
-            <p>Press any key to start guessing!</p>
+            <p class="lead">The goal of this game is to guess the current word without making too many incorrect guesses! Each word is from a list of the top 25 most popular candies given out during Halloween.</p>
+            <p id="instructions">Choose a difficulty and click ready!</p>
+            <button id="easy" type="button" class="btn btn-light">Easy (12 guesses)</button>
+            <button id="normal" type="button" class="btn btn-light">Normal (8 guesses)</button>
+            <button id="hard" type="button" class="btn btn-light">Hard (4 guesses)</button>
+            <br>
+            <button id="ready" type="button" class="btn btn-success">Ready</button>
+            <p id="warning" class="hidden"> Please choose a difficulty before clicking ready!</p>
         </div>
 
         <div class="container">
 
-            <div class="row">
+            <div id="in-game" class="row hidden">
 
-                <div class="col-md-6">
-                    <!-- <p>Total games played: <span id="total-games"></span></p>
+                <div class="col-md-9">
+                    <div class="card">
+                        <div class="card-header">
+                            Current word: <span id="curr-word"></span>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Number of guesses remaining: <span id="num-guesses-left"></span></li>
+                            <li class="list-group-item">Letters already guessed: <span id="letters-guessed"></span></li>
+                        </ul>
+                    </div>
+                </div>
 
-                    <p>Wins: <span id="num-wins"></span></p>
-
-                    <p id="outcome"></p> -->
-
-
-
-
+                <div class="col-md-3">
                     <div class="card">
                         <div class="card-header">
                             Stats
                         </div>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Total games played: <span id="total-games"></span></li>
+                            <li class="list-group-item">Total: <span id="total-games"></span></li>
                             <li class="list-group-item">Wins: <span id="num-wins"></span></li>
-                            <li id="outcome" class="list-group-item"></li>
                         </ul>
                     </div>
                 </div>
                 
-                <div class="col-md-6">
-                    <!-- <p>Current word: <span id="curr-word">?</span></p>
-                    
-                    <p>Number of guesses remaining: <span id="num-guesses-left">?</span></p>
-                    
-                    <p>Letters already guessed: <span id="letters-guessed">?</span></p>
+            </div>
 
-                    <p id="game-over" class="hidden">Game Over! You were able to guess <span id="end-wins"></span> out of the <span id="end-total-games"></span> word(s)!</p> -->
-                
-                
-                
-                
+            <div id="results" class="row hidden">
+                <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            Current word: <span id="curr-word">?</span>
+                            <h2>Game Over!</h2>
                         </div>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Number of guesses remaining: <span id="num-guesses-left">?</span></li>
-                            <li class="list-group-item">Letters already guessed: <span id="letters-guessed">?</span></li>
-                            <li id="game-over" class="list-group-item hidden">Game Over! You were able to guess <span id="end-wins"></span> out of the <span id="end-total-games"></span> word(s)!</li>
+                            <li class="list-group-item">You were able to guess <span id="end-wins"></span> out of the <span id="end-total-games"></span> words!</li>
                         </ul>
                     </div>
-
                 </div>
             </div>
 
             <div id="candies" class="row">
-                <!-- <div class="col-md-3">
-                    <div class="card">
-                        <img class="card-img-top" src="assets/images/candies/skittles.jpg" alt="skittles">
-                        <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-                </div> -->
 
-                
             </div>
         </div>
     </body>
