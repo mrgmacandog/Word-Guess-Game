@@ -88,9 +88,6 @@
             this.currWord = this.wordsLeft[Math.floor(Math.random() * this.wordsLeft.length)];
             console.log("Word being guessed: " + this.currWord);
 
-            
-
-
             for (let i = 0; i < this.currWord.length; i++) {
                 let thisLetter = this.currWord.charAt(i);
                 if (ALPHABET.includes(thisLetter)) {
@@ -100,8 +97,7 @@
                     let oneLetter = [this.currWord.charAt(i), true];
                     this.currWordLetters.push(oneLetter);
                     this.numLettersFound++;
-                }
-                
+                }   
             }
 
             this.createOutput();
@@ -132,7 +128,7 @@
             $("curr-word").textContent = this.currWordOutput;
             $("num-guesses-left").textContent = this.numGuessesLeft;
 
-            $("letters-guessed").textContent = this.lettersGuessed;
+            $("letters-guessed").textContent = this.lettersGuessed.toUpperCase();
 
         },
         createOutput: function() {  //SOLVE FENCE POST
