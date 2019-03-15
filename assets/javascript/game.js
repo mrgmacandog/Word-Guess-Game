@@ -42,7 +42,7 @@
             // Create a card and append it to the column
             let card = document.createElement("div");
             card.className = "card text-white shadow rounded";
-            // If word is guessed
+            // Word is guessed
             if (isSolved) {
                 card.classList.add("bg-success");
             } else {  // Word is not guessed
@@ -72,7 +72,7 @@
             // Create a description and append it to the card body
             let cardText = document.createElement("p");
             cardText.className = "card-text";
-            // If word is guessed
+            // Word is guessed
             if (isSolved) {
                 cardText.innerText = "Correct!";
             } else {  // Word is not guessed
@@ -89,12 +89,16 @@
             // Select the random word from the array and sets it as the current word
             this.currWord = this.wordsLeft[Math.floor(Math.random() * this.wordsLeft.length)];
 
-            // 
+            // Create nested array that holds a character and a boolean that
+            // signifies whether the letter or underscore will be shown
             for (let i = 0; i < this.currWord.length; i++) {
                 let thisLetter = this.currWord.charAt(i);
+                // Set the boolean associated with the alphabetic letter to false 
                 if (ALPHABET.includes(thisLetter)) {
                     let oneLetter = [this.currWord.charAt(i), false];
                     this.currWordLetters.push(oneLetter);
+                // Set the boolean associated with non-alphabetic characters to true to
+                //     be displayed without guessing them
                 } else {
                     let oneLetter = [this.currWord.charAt(i), true];
                     this.currWordLetters.push(oneLetter);
@@ -105,6 +109,7 @@
             // Create what the output would look like
             this.createOutput();
 
+            // Update screen
             $("total-games").textContent = this.totalGames;
             $("num-wins").textContent = this.wins;
             $("curr-word").textContent = this.currWordOutput;
@@ -115,7 +120,9 @@
 
         // Perform a guess with the key press
         guessLetter: function(key) {
+            // Check to see if user already guessed the letter before
             if (!this.lettersGuessed.includes(key)) {
+                // Check if word has letter
                 if (this.currWord.includes(key)) {
                     this.updateOutput(key);
                 } else {  // Add to lettersGuessed
@@ -123,6 +130,8 @@
                     this.numGuessesLeft--;  // Add to lettersGuessed
                 } 
             }
+
+            // Update screen
             $("curr-word").textContent = this.currWordOutput;
             $("num-guesses-left").textContent = this.numGuessesLeft;
             $("letters-guessed").textContent = this.lettersGuessed.toUpperCase();
@@ -132,8 +141,11 @@
         createOutput: function() { 
             this.currWordOutput = "";
             for (let i = 0; i < this.currWordLetters.length; i++) {
+                // Display letter if true
                 if (this.currWordLetters[i][1] === true) {
                     this.currWordOutput += "\xa0" + this.currWordLetters[i][0] + "\xa0";
+
+                // Display underscore
                 } else {
                     this.currWordOutput += "\xa0_\xa0";
                 }
@@ -143,14 +155,18 @@
         // Update output
         updateOutput: function(key) {
             for (let i = 0; i < this.currWordLetters.length; i++) {
+                // Update the boolean associated with each letter of the letter guessed is correct
                 if (this.currWordLetters[i][0] === key &&
                     this.currWordLetters[i][1] === false) {
                     this.currWordLetters[i][1] = true;
                     this.numLettersFound++;
                 }
             }
+            // Create output with new letter to boolean associatons
             this.createOutput();
         },
+
+        // Check if user has found all the letters
         checkIfSolved: function() {
             return this.numLettersFound === this.currWord.length;
         },
@@ -229,36 +245,30 @@
         // Listens for a key press
         document.onkeyup = function(event) {
 
-            // If there are still words to be guessed
-            // if (game.wordsLeft.length > 0) {
-
+            // Continue game only if difficulty is set, there are still words to be guessed
+            //     and the key pressed is a letter
             if (game.isDifficultySet && game.wordsLeft.length > 0 && event.keyCode >= 65 && event.keyCode <= 90) {
+
                 // Guesses with a key
                 game.guessLetter(event.key); 
 
                 // Continue with current word if it's not solved yet
-                if (!game.checkIfSolved() && game.numGuessesLeft > 0) {
+                if (game.checkIfSolved() || game.numGuessesLeft === 0) {
 
-                // Start new game with new word
-                } else {
                     let isSolved = game.checkIfSolved()
 
                     if (isSolved) {
                         game.wins++;
-
-                        // Open assets/audio/Fanfare-sound/Read.txt for licencing
+                        // Open assets/audio/Fanfare-sound/Read.txt for licensing
                         let audio = new Audio("assets/audio/Game-show-correct-answer/Game-show-correct-answer.mp3");
                         audio.play();
                     } else {
-
-                        // Open assets/audio/womp-womp/Read.txt for licencing
+                        // Open assets/audio/womp-womp/Read.txt for licensing
                         let audio = new Audio("assets/audio/womp-womp/womp-womp.mp3");
                         audio.play();
                     }
 
                     game.createCandyCard(isSolved);
-                    // game.displayIsSolved(isSolved);
-
                     game.totalGames++;
                     game.reset();
 
