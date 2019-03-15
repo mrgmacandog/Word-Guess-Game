@@ -8,16 +8,15 @@
         <title>Hangman</title>
     </head>
     <body>
-        <div class="jumbotron jumbotron-fluid">
+        <div class="jumbotron jumbotron-fluid bg-dark text-white">
             <h1 class="display-4">Candy Guesser</h1>
             <p class="lead">The goal of this game is to guess the current word without making too many incorrect guesses! Each word is from a list of the top 25 most popular candies given out during Halloween.</p>
             <p id="instructions">Choose a difficulty and click ready!</p>
-            <button id="easy" type="button" class="btn btn-light">Easy (12 incorrect guesses)</button>
-            <button id="normal" type="button" class="btn btn-light">Normal (8 incorrect guesses)</button>
-            <button id="hard" type="button" class="btn btn-light">Hard (4 incorrect guesses)</button>
+            <button id="easy" type="button" class="btn btn-secondary">Easy (12 guesses)</button>
+            <button id="normal" type="button" class="btn btn-secondary">Normal (8 guesses)</button>
+            <button id="hard" type="button" class="btn btn-secondary">Hard (4 guesses)</button>
             <br>
-            <button id="ready" type="button" class="btn btn-success">Ready</button>
-            <p id="warning" class="hidden"> Please choose a difficulty before clicking ready!</p>
+            <button id="ready" type="button" class="btn btn-success" disabled>Ready</button>
         </div>
 
         <div class="container">
@@ -25,19 +24,19 @@
             <div id="in-game" class="row hidden">
 
                 <div class="col-md-9">
-                    <div class="card">
-                        <div class="card-header">
+                    <div class="card shadow rounded">
+                        <div class="card-header bg-dark text-white">
                             Current word: <span id="curr-word"></span>
                         </div>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Number of incorrect guesses remaining: <span id="num-guesses-left"></span></li>
+                            <li class="list-group-item">Number of guesses remaining: <span id="num-guesses-left"></span></li>
                             <li class="list-group-item">Letters already guessed: <span id="letters-guessed"></span></li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="col-md-3">
-                    <div class="card">
+                    <div class="card shadow rounded">
                         <div class="card-header">
                             Stats
                         </div>

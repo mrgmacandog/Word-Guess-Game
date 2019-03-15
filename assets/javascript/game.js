@@ -2,7 +2,6 @@
 
 (function(){
 
-    // const NUM_START_GUESSES = 8;
     const ALPHABET = "abcdefghijklmnopqrstuvwxyz";
 
     // Not jQuery but uses same function name to return the DOM element
@@ -31,16 +30,19 @@
         lettersGuessed: "",  // String of letter guessed that are not in the word
         isDifficultySet: false,  // Flag for setting the difficulty
 
+        // Creates a card to be displayed below the game
         createCandyCard: function(isSolved) {
             
             // Create a bootstrap column
             let column = document.createElement("div");
-            column.className = "col-md-3";
+
+            // "d-flex align-items-stretch" allows the cards to be the same height in a row
+            column.className = "col-md-3 d-flex align-items-stretch";
 
             // Create a card and append it to the column
             let card = document.createElement("div");
+            card.className = "card text-white shadow rounded";
             // If word is guessed
-            card.className = "card text-white";
             if (isSolved) {
                 card.classList.add("bg-success");
             } else {  // Word is not guessed
@@ -51,6 +53,7 @@
             // Create an image tag and append it to card
             let image = document.createElement("img");
             image.className = "card-img-top";
+            // The image file name has to match exactly the word that's being guessed
             image.src = "assets/images/candies/" + this.currWord + ".jpg";
             image.alt = this.currWord;
             card.appendChild(image);
@@ -75,20 +78,18 @@
             } else {  // Word is not guessed
                 cardText.innerText = "You got this far: " + this.currWordOutput;
             }
-            
             cardBody.append(cardText);
             
+            // Adds to the beginning of the cards
             $("candies").insertBefore(column, $("candies").firstChild);
         },
 
-        // Starts a new game by selecting a random word from the array of words
+        // Start a new game by selecting a random word from the array of words
         startNewGame: function() {
-            console.log("Wins: " + this.wins);
-
-            // Selects the random word from the array and sets it as the current word
+            // Select the random word from the array and sets it as the current word
             this.currWord = this.wordsLeft[Math.floor(Math.random() * this.wordsLeft.length)];
-            console.log("Word being guessed: " + this.currWord);
 
+            // 
             for (let i = 0; i < this.currWord.length; i++) {
                 let thisLetter = this.currWord.charAt(i);
                 if (ALPHABET.includes(thisLetter)) {
@@ -101,6 +102,7 @@
                 }   
             }
 
+            // Create what the output would look like
             this.createOutput();
 
             $("total-games").textContent = this.totalGames;
@@ -110,27 +112,24 @@
             $("letters-guessed").textContent = this.lettersGuessed;
 
         },
+
+        // Perform a guess with the key press
         guessLetter: function(key) {
             if (!this.lettersGuessed.includes(key)) {
                 if (this.currWord.includes(key)) {
                     this.updateOutput(key);
                 } else {  // Add to lettersGuessed
-                    console.log("Word doesn't include " + key);
                     this.lettersGuessed += key + "\xa0";
                     this.numGuessesLeft--;  // Add to lettersGuessed
                 } 
-            } else {
-                console.log("Already pressed the " + key + " key");
             }
-            console.log("# guesses left: " + this.numGuessesLeft);
-            console.log("Current word output: " + this.currWordOutput);
             $("curr-word").textContent = this.currWordOutput;
             $("num-guesses-left").textContent = this.numGuessesLeft;
-
             $("letters-guessed").textContent = this.lettersGuessed.toUpperCase();
-
         },
-        createOutput: function() {  //SOLVE FENCE POST
+
+        // Build output
+        createOutput: function() { 
             this.currWordOutput = "";
             for (let i = 0; i < this.currWordLetters.length; i++) {
                 if (this.currWordLetters[i][1] === true) {
@@ -139,9 +138,9 @@
                     this.currWordOutput += "\xa0_\xa0";
                 }
             }
-            
         },
         
+        // Update output
         updateOutput: function(key) {
             for (let i = 0; i < this.currWordLetters.length; i++) {
                 if (this.currWordLetters[i][0] === key &&
@@ -150,15 +149,13 @@
                     this.numLettersFound++;
                 }
             }
-            console.log("# letters found: " + this.numLettersFound);
-            console.log("current word length: " + this.currWord.length);
-
             this.createOutput();
         },
         checkIfSolved: function() {
             return this.numLettersFound === this.currWord.length;
         },
 
+        // Show rsults when all words have been attempted to be guessed
         displayResults: function() {
             $("results").classList.remove("hidden");
             $("in-game").classList.add("hidden");
@@ -171,16 +168,18 @@
             // Remove current word from the list of words left
             this.wordsLeft.splice(this.wordsLeft.indexOf(this.currWord), 1);
 
+            // Reserts game attributes
             this.currWordOutput = "";
             this.currWordLetters = [];
             this.numGuessesLeft = this.numGuessesStart;
             this.numLettersFound = 0;
-            this.lettersGuessed = [];
+            this.lettersGuessed = "";
         }
     }
 
     window.onload = function() {
 
+        // Choose easy mode
         $("easy").onclick = function() {
             game.numGuessesStart = 12;
             game.numGuessesLeft = 12;
@@ -188,9 +187,10 @@
             $("easy").classList.add("active");
             $("normal").classList.remove("active");
             $("hard").classList.remove("active");
-            game.isDifficultySet = true;
+            $("ready").disabled = false;
         }
 
+        // Choose normal mode
         $("normal").onclick = function() {
             game.numGuessesStart = 8;
             game.numGuessesLeft = 8;
@@ -198,9 +198,10 @@
             $("easy").classList.remove("active");
             $("normal").classList.add("active");
             $("hard").classList.remove("active");
-            game.isDifficultySet = true;
+            $("ready").disabled = false;
         }
 
+        // Choose hard mode
         $("hard").onclick = function() {
             game.numGuessesStart = 4;
             game.numGuessesLeft = 4;
@@ -208,21 +209,18 @@
             $("easy").classList.remove("active");
             $("normal").classList.remove("active");
             $("hard").classList.add("active");
-            game.isDifficultySet = true;
+            $("ready").disabled = false;
         }
 
+        // Hide buttons, change instructions, and start game
         $("ready").onclick = function() {
-            if (game.isDifficultySet) {
-                $("in-game").classList.remove("hidden");
-                $("easy").classList.add("hidden");
-                $("normal").classList.add("hidden");
-                $("hard").classList.add("hidden");
-                $("ready").classList.add("hidden");
-                $("warning").classList.add("hidden");
-                $("instructions").innerText = "Press any key to get started!";
-            } else {
-                $("warning").classList.remove("hidden");
-            }
+            game.isDifficultySet = true;
+            $("in-game").classList.remove("hidden");
+            $("easy").classList.add("hidden");
+            $("normal").classList.add("hidden");
+            $("hard").classList.add("hidden");
+            $("ready").classList.add("hidden");
+            $("instructions").innerText = "Press any key to make your first guess!";
         }
 
         // Initiate a new game
@@ -230,7 +228,6 @@
 
         // Listens for a key press
         document.onkeyup = function(event) {
-            console.log("Key pressed: " + event.key);
 
             // If there are still words to be guessed
             // if (game.wordsLeft.length > 0) {
@@ -241,22 +238,18 @@
 
                 // Continue with current word if it's not solved yet
                 if (!game.checkIfSolved() && game.numGuessesLeft > 0) {
-                    console.log("Continuing game");
+
                 // Start new game with new word
                 } else {
-
                     let isSolved = game.checkIfSolved()
 
                     if (isSolved) {
-                        console.log("You solved it!");
                         game.wins++;
-                        
 
                         // Open assets/audio/Fanfare-sound/Read.txt for licencing
-                        let audio = new Audio("assets/audio/Fanfare-sound/Fanfare-sound.mp3");
+                        let audio = new Audio("assets/audio/Game-show-correct-answer/Game-show-correct-answer.mp3");
                         audio.play();
                     } else {
-                        console.log("You ran out of guesses. Next word!");
 
                         // Open assets/audio/womp-womp/Read.txt for licencing
                         let audio = new Audio("assets/audio/womp-womp/womp-womp.mp3");
@@ -267,8 +260,6 @@
                     // game.displayIsSolved(isSolved);
 
                     game.totalGames++;
-                    console.log("Total Games:" + game.totalGames)
-                    console.log("");
                     game.reset();
 
                     // Only start a new game if there are words left
@@ -277,16 +268,9 @@
                     } else {  // Else display the results
                         game.displayResults();
                         $("instructions").innerText = "Hit refresh to play again!";
-                        console.log("Congratulations, you were able to find " + game.wins +
-                                    " out of the " + game.totalGames +" played");
                     }
                 }
-            } else {
-                console.log("Input must be a letter");
             }
-        
-            console.log("");
-
         }
     }
     
