@@ -2,7 +2,7 @@
 
 (function(){
 
-    const NUM_START_GUESSES = 8;
+    // const NUM_START_GUESSES = 8;
     const ALPHABET = "abcdefghijklmnopqrstuvwxyz";
 
     // Not jQuery but uses same function name to return the DOM element
@@ -24,7 +24,8 @@
         currWordLetters: [],  // Nested array with each letter of the word
                               // and a boolean that signifies if the letter
                               // should be displayed or not
-        numGuessesLeft: NUM_START_GUESSES,  // Amount of guesses the user has left
+        numGuessesStart: 0,  // Number of guesses to start, depending on the difficulty
+        numGuessesLeft: 0,  // Amount of guesses the user has left
                                             // Starts off with the constant
         numLettersFound: 0,  // Number of letters found
         lettersGuessed: "",  // String of letter guessed that are not in the word
@@ -108,7 +109,6 @@
             $("num-guesses-left").textContent = this.numGuessesLeft;
             $("letters-guessed").textContent = this.lettersGuessed;
 
-
         },
         guessLetter: function(key) {
             if (!this.lettersGuessed.includes(key)) {
@@ -118,8 +118,7 @@
                     console.log("Word doesn't include " + key);
                     this.lettersGuessed += key + "\xa0";
                     this.numGuessesLeft--;  // Add to lettersGuessed
-                }
-                
+                } 
             } else {
                 console.log("Already pressed the " + key + " key");
             }
@@ -174,7 +173,7 @@
 
             this.currWordOutput = "";
             this.currWordLetters = [];
-            this.numGuessesLeft = NUM_START_GUESSES;
+            this.numGuessesLeft = this.numGuessesStart;
             this.numLettersFound = 0;
             this.lettersGuessed = [];
         }
@@ -183,6 +182,7 @@
     window.onload = function() {
 
         $("easy").onclick = function() {
+            game.numGuessesStart = 12;
             game.numGuessesLeft = 12;
             $("num-guesses-left").textContent = game.numGuessesLeft;
             $("easy").classList.add("active");
@@ -192,6 +192,7 @@
         }
 
         $("normal").onclick = function() {
+            game.numGuessesStart = 8;
             game.numGuessesLeft = 8;
             $("num-guesses-left").textContent = game.numGuessesLeft;
             $("easy").classList.remove("active");
@@ -201,6 +202,7 @@
         }
 
         $("hard").onclick = function() {
+            game.numGuessesStart = 4;
             game.numGuessesLeft = 4;
             $("num-guesses-left").textContent = game.numGuessesLeft;
             $("easy").classList.remove("active");
